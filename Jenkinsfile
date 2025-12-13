@@ -1,40 +1,42 @@
 pipeline {
     agent {
         docker {
-            // Image contenant Maven et Git
             image 'my-maven-git:latest'
-            // Pour réutiliser le cache Maven local entre builds
+            // Utiliser un volume Docker pour Maven plutôt que $HOME
             args '-v maven-repo:/root/.m2'
         }
+    }
+    options {
+        // Supprime le workspace automatiquement avant chaque build
+        skipDefaultCheckout(false)
     }
     stages {
         stage('Checkout') {
             steps {
-                // clean the directory
-                sh "rm -rf *"
-                // Checkout the Git repository
-                sh "git clone https://github.com/simoks/java-maven.git"
+                // Nettoyer le workspace proprement
+                deleteDir()
+                
+                // Checkout avec les credentials Jenkins configurés
+                checkout scm
             }
         }
-        stage('Build') {
+        stage('Build & Test') {
             steps {
-                // Here, we can can run Maven commands
                 script {
+                    echo "Current directory: ${pwd()}"
                     
-                    def currentDir = pwd()
-                    echo "Current directory: ${currentDir}"
-                    
-                    // Navigate to the directory containing the Maven project
-                    dir('java-maven/maven') {
-                        // Run Maven commands
-                        sh 'mvn clean test package'
-                        sh "java -jar target/maven-0.0.1-SNAPSHOT.jar"
-                    }
-                    
-                   
+                    // Run Maven commands à la racine du repo
+                    sh 'mvn clean test package'
+                }
+            }
+        }
+        stage('Run') {
+            steps {
+                script {
+                    // Exécuter le jar généré
+                    sh 'java -jar target/maven-0.0.1-SNAPSHOT.jar'
                 }
             }
         }
     }
 }
-
