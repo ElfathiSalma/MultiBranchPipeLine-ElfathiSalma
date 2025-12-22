@@ -29,7 +29,7 @@ pipeline {
                     dir('maven') { 
                     // Run Maven commands 
                         sh 'mvn clean test package'
-                        archiveArtifacts artifacts: 'maven/target/*.jar', fingerprint: true
+                        archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
                     }
                 }
             }
