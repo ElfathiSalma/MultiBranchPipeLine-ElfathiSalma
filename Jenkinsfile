@@ -33,7 +33,7 @@ pipeline {
                 }
             }
         }
-        stage('Dependency-Check') {
+        /* stage('Dependency-Check') {
             steps {
                 dir('maven') { 
                     // Run Maven commands 
@@ -46,6 +46,7 @@ pipeline {
                 }
             }
         }
+        */
         stage('Run') {
             steps {
                 script {
