@@ -63,8 +63,8 @@ pipeline {
         stage('Notify Slack'){
             steps {
                 script {
-                    def artifactPath = "java-maven/maven/target/maven-0.0.1-SNAPSHOT.jar"
-                    def artifactURL = "${env.JENKINS_URL}/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/${artifactPath}"
+                    def artifactPath = "target/maven-0.0.1-SNAPSHOT.jar"
+                    def artifactURL = "${env.JENKINS_URL}/job/${env.JOB_NAME}/job/main/${env.BUILD_NUMBER}/artifact/${artifactPath}"
 
                     //Add channel name
                     
