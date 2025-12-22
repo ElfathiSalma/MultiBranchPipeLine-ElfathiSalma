@@ -64,7 +64,8 @@ pipeline {
             steps {
                 script {
                     def artifactPath = "target/maven-0.0.1-SNAPSHOT.jar"
-                    def artifactURL = "${env.JENKINS_URL}/job/${env.JOB_NAME}/job/main/${env.BUILD_NUMBER}/artifact/${artifactPath}"
+                    def pipelineName = env.JOB_NAME.split('/')[0]
+                    def artifactURL = "${env.JENKINS_URL}/job/${pipelineName}/job/main/${env.BUILD_NUMBER}/artifact/${artifactPath}"
 
                     //Add channel name
                     
